@@ -1,11 +1,15 @@
-# Create the SQLAlchemy engine for MySQL
-engine = create_engine(f"mysql+pymysql://{username}:{password}@{hostname}:{port}/{database_name}")
 
-df['date'] = pd.to_datetime(df['date'], format='%d/%m/%Y')
+from pymongo.mongo_client import MongoClient
+from pymongo.server_api import ServerApi
 
-table_name="stocktweet"
+uri = "mongodb+srv://<db_username>:<db_password>@cluster0.vwjb1.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 
-# Insert the data into the MySQL table
-df.to_sql(table_name, engine, if_exists='append', index=False)
+# Create a new client and connect to the server
+client = MongoClient(uri, server_api=ServerApi('1'))
 
-print("Data loaded into MySQL table successfully.")
+# Send a ping to confirm a successful connection
+try:
+    client.admin.command('ping')
+    print("Pinged your deployment. You successfully connected to MongoDB!")
+except Exception as e:
+    print(e)
